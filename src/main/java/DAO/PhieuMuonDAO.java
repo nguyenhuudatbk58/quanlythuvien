@@ -36,6 +36,7 @@ public class PhieuMuonDAO {
 		session.save(phieuMuon);
 
 		ts.commit();
+		session.close();
 	}
 
 	public void delete(String maPhieu) {
@@ -66,7 +67,10 @@ public class PhieuMuonDAO {
 		Query query = session.createQuery("FROM PhieuMuon where maPhieu= :maPhieu");
 		query.setParameter("maPhieu", maPhieu);
 
-		PhieuMuon pm = (PhieuMuon) query.uniqueResult();
+		PhieuMuon pm = (PhieuMuon) query.list().get(0);
+
+		ts.commit();
+		session.close();
 
 		return pm;
 	}

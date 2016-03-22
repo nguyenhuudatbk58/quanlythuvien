@@ -1,15 +1,47 @@
 package Model;
 
+import java.util.Calendar;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+@Entity
+@Table(name = "sach", uniqueConstraints = { @UniqueConstraint(columnNames = "maSach") })
 public class Sach {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	private int id;
+
+	@Column(name = "ten", nullable = false)
 	private String ten;
+
+	@Column(name = "ma_sach", nullable = false)
 	private String maSach;
+
+	@Column(name = "tac_gia", nullable = false)
 	private String tacGia;
+
+	@Column(name = "nha_xuat_ban", nullable = false)
 	private String nhaXuatBan;
+
+	@Column(name = "gia", nullable = false)
 	private String gia;
+
+	@Column(name = "chu_de", nullable = false)
 	private String chuDe;
 
-	public Sach( String ten, String maSach, String tacGia, String nhaXuatBan, String gia, String chuDe) {
+	@Column(name = "ngay_them", nullable = false)
+	private String ngayThem;
+
+	public Sach(String ten, String maSach, String tacGia, String nhaXuatBan, String gia, String chuDe,
+			String ngayThem) {
 		super();
 		this.ten = ten;
 		this.maSach = maSach;
@@ -17,10 +49,19 @@ public class Sach {
 		this.nhaXuatBan = nhaXuatBan;
 		this.gia = gia;
 		this.chuDe = chuDe;
+		this.ngayThem = ngayThem;
 	}
 
 	public Sach() {
 
+	}
+
+	public String getNgayThem() {
+		return ngayThem;
+	}
+
+	public void setNgayThem(String ngayThem) {
+		this.ngayThem = ngayThem;
 	}
 
 	public int getId() {

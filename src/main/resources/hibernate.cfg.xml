@@ -11,10 +11,10 @@
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="show_sql">true</property>
-		<mapping resource="mappingfile/sach.hbm.xml"></mapping>
-		<mapping resource="mappingfile/thanhVien.hbm.xml"></mapping>
-		<mapping resource="mappingfile/sachMuon.hbm.xml"></mapping>
-		<mapping resource="mappingfile/phieuMuon.hbm.xml"></mapping>
+		<mapping class="Model.Sach"></mapping>
+		<mapping class="Model.ThanhVien"></mapping>
+		<mapping class="Model.SachMuon"></mapping>
+		<mapping class="Model.PhieuMuon"></mapping>
 
 	</session-factory>
 

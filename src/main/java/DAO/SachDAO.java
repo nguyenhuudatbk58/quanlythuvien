@@ -17,7 +17,7 @@ public class SachDAO {
 	private Session session;
 	private Transaction ts;
 
-	SachDAO() {
+	public SachDAO() {
 		try {
 			factory = new Configuration().configure().buildSessionFactory();
 

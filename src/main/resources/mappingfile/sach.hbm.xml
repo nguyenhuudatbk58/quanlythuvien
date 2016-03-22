@@ -4,6 +4,7 @@
  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 	<class name="Model.Sach" table="sach">
+	
 		<id name="id" type="int" column="id">
 			<generator class="native" />
 		</id>

@@ -1,8 +1,10 @@
 package DAO;
 
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
-import Model.Sach;
+import Model.PhieuMuon;
+import Model.SachMuon;
 
 public class Test {
 	public static void main(String[] args) {
@@ -14,8 +16,20 @@ public class Test {
 		// for (Sach s : sach) {
 		// System.out.println(" Ma: " + s.getMaSach());
 		// }
-		Sach sach = sd.getByBookCode("ISBN 978-604-943-255-2");
-		System.out.println("Ten: " + sach.getTen() + ",Tac Gia: " + sach.getTacGia());
+		// Sach sach = sd.getByBookCode("ISBN 978-604-943-255-2");
+		// System.out.println("Ten: " + sach.getTen() + ",Tac Gia: " +
+		// sach.getTacGia());
+		// Set<SachMuon> set = new HashSet<SachMuon>();
+		// SachMuon sm1 = new SachMuon();
+		// PhieuMuon pm = new PhieuMuon("01", "2013 0837", null);
+		// pm.setId(3);
+		PhieuMuonDAO pmd = new PhieuMuonDAO();
+		PhieuMuon pm = pmd.getByItemCode("01");
+		Set<SachMuon> set = pm.getSachMuon();
+		Iterator iterator = (Iterator) set.iterator();
+		SachMuon sm = (SachMuon) iterator.next();
+		set.remove(sm);
+		pmd.save(pm);
 	}
 
 }
