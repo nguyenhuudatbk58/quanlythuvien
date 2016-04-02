@@ -7,15 +7,26 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 import Model.Sach;
 import Model.ThanhVien;
 
 public class ThanhVienDAO {
-	private SessionFactory factory;
-	private Session session;
-	private Transaction ts;
+	private static SessionFactory factory;
+	private static Session session;
+	private static Transaction ts;
+
+	static {
+		try {
+			factory = new AnnotationConfiguration().configure().buildSessionFactory();
+
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		}
+
+	}
 
 	ThanhVienDAO() {
 		try {
@@ -26,7 +37,7 @@ public class ThanhVienDAO {
 		}
 	}
 
-	public ArrayList<ThanhVien> getAll() {
+	public static ArrayList<ThanhVien> getAll() {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -39,7 +50,7 @@ public class ThanhVienDAO {
 		return thanhVien;
 	}
 
-	public ThanhVien getByMemberCode(String maThanhVien) {
+	public static ThanhVien getByMemberCode(String maThanhVien) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -53,7 +64,7 @@ public class ThanhVienDAO {
 		return thanhVien;
 	}
 
-	public void save(ThanhVien thanhVien) {
+	public static void save(ThanhVien thanhVien) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -63,7 +74,7 @@ public class ThanhVienDAO {
 		session.close();
 	}
 
-	public void delete(ThanhVien thanhVien) {
+	public static void delete(ThanhVien thanhVien) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -75,7 +86,7 @@ public class ThanhVienDAO {
 		session.close();
 	}
 
-	public void updateById(ThanhVien thanhVien) {
+	public static void updateById(ThanhVien thanhVien) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 

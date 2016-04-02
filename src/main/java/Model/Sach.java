@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.Calendar;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "sach", uniqueConstraints = { @UniqueConstraint(columnNames = "maSach") })
+@Table(name = "sach", uniqueConstraints = { @UniqueConstraint(columnNames = "ma_sach") })
 public class Sach {
 
 	@Id
@@ -37,7 +35,7 @@ public class Sach {
 	@Column(name = "chu_de", nullable = false)
 	private String chuDe;
 
-	@Column(name = "ngay_them", nullable = false)
+	@Column(name = "ngay_nhap", nullable = false)
 	private String ngayThem;
 
 	public Sach(String ten, String maSach, String tacGia, String nhaXuatBan, String gia, String chuDe,

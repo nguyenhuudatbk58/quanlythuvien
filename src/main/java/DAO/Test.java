@@ -1,35 +1,32 @@
 package DAO;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.util.ArrayList;
 
-import Model.PhieuMuon;
-import Model.SachMuon;
+import Model.ThanhVien;
 
 public class Test {
+	private static ThanhVienDAO tvd;
+
 	public static void main(String[] args) {
-		SachDAO sd = new SachDAO();
-		// sd.save(new Sach("Thep Da Toi The Day", "ISBN 893 508 997 891",
-		// "NHICALAI AXTOROPXKI", "Nha Xuat Ban Van Hoc", "99 000",
-		// "Sach Van Hoc"));
-		// ArrayList<Sach> sach = sd.getAll();
-		// for (Sach s : sach) {
-		// System.out.println(" Ma: " + s.getMaSach());
-		// }
-		// Sach sach = sd.getByBookCode("ISBN 978-604-943-255-2");
-		// System.out.println("Ten: " + sach.getTen() + ",Tac Gia: " +
-		// sach.getTacGia());
-		// Set<SachMuon> set = new HashSet<SachMuon>();
-		// SachMuon sm1 = new SachMuon();
-		// PhieuMuon pm = new PhieuMuon("01", "2013 0837", null);
-		// pm.setId(3);
-		PhieuMuonDAO pmd = new PhieuMuonDAO();
-		PhieuMuon pm = pmd.getByItemCode("01");
-		Set<SachMuon> set = pm.getSachMuon();
-		Iterator iterator = (Iterator) set.iterator();
-		SachMuon sm = (SachMuon) iterator.next();
-		set.remove(sm);
-		pmd.save(pm);
+		// ThanhVien mem = new ThanhVien();
+		// mem.setTen("Nguyễn Hoàng Sơn");
+		// mem.setMaThanhVien("2013 0038");
+		// mem.setEmail("sonhn@gmail.com");
+		// mem.setDiaChi("Hà Nội");
+		//
+		// tvd.save(mem);
+
+		ArrayList<ThanhVien> mems = tvd.getAll();
+
+		for (ThanhVien mem : mems) {
+			System.out.println("Ten: " + mem.getTen());
+			System.out.println("Ma thanh vien: " + mem.getMaThanhVien());
+			System.out.println("Email: " + mem.getEmail());
+			System.out.println("Dia chi: " + mem.getDiaChi());
+			System.out.println("-----------------");
+
+		}
+
 	}
 
 }

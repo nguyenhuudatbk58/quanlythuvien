@@ -7,26 +7,36 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.AnnotationConfiguration;
 
 import Model.Sach;
 
 // doi tuong truy nhap du lieu (sach)
 public class SachDAO {
-	private SessionFactory factory;
-	private Session session;
-	private Transaction ts;
+	private static SessionFactory factory;
+	private static Session session;
+	private static Transaction ts;
+
+	static {
+		try {
+			factory = new AnnotationConfiguration().configure().buildSessionFactory();
+
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		}
+
+	}
 
 	public SachDAO() {
 		try {
-			factory = new Configuration().configure().buildSessionFactory();
+			factory = new AnnotationConfiguration().configure().buildSessionFactory();
 
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public ArrayList<Sach> getAll() {
+	public static ArrayList<Sach> getAll() {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -38,7 +48,7 @@ public class SachDAO {
 		return sach;
 	}
 
-	public Sach getByBookCode(String maSach) {
+	public static Sach getByBookCode(String maSach) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -52,7 +62,7 @@ public class SachDAO {
 		return sach;
 	}
 
-	public void save(Sach sach) {
+	public static void save(Sach sach) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -63,7 +73,7 @@ public class SachDAO {
 
 	}
 
-	public void delete(Sach sach) {
+	public static void delete(Sach sach) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -75,7 +85,7 @@ public class SachDAO {
 		session.close();
 	}
 
-	public void updateById(Sach sach) {
+	public static void updateById(Sach sach) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 

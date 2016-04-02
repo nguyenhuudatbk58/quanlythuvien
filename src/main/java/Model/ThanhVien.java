@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "thanh_vien", uniqueConstraints = { @UniqueConstraint(columnNames = "maThanhVien"),
+@Table(name = "thanh_vien", uniqueConstraints = { @UniqueConstraint(columnNames = "ma_thanh_vien"),
 		@UniqueConstraint(columnNames = "email") })
 public class ThanhVien {
 
@@ -34,14 +34,14 @@ public class ThanhVien {
 
 	}
 
-	public ThanhVien(int id, String ten, String maThanhVien, String cMTND, String sDT) {
+	public ThanhVien(String ten, String maThanhVien, String email, String diaChi) {
 		super();
-		this.id = id;
 		this.ten = ten;
 		this.maThanhVien = maThanhVien;
-		this.email = cMTND;
-		this.diaChi = sDT;
+		this.email = email;
+		this.diaChi = diaChi;
 	}
+	
 
 	public int getId() {
 		return id;
@@ -67,20 +67,20 @@ public class ThanhVien {
 		this.maThanhVien = maThanhVien;
 	}
 
-	public String getcMTND() {
+	public String getEmail() {
 		return email;
 	}
 
-	public void setcMTND(String cMTND) {
-		this.email = cMTND;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getsDT() {
+	public String getDiaChi() {
 		return diaChi;
 	}
 
-	public void setsDT(String sDT) {
-		this.diaChi = sDT;
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
 	}
 
 }

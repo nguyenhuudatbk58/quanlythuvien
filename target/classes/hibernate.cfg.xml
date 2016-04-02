@@ -11,8 +11,9 @@
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="show_sql">true</property>
-		<mapping class="Model.Sach"></mapping>
 		<mapping class="Model.ThanhVien"></mapping>
+
+		<mapping class="Model.Sach"></mapping>
 		<mapping class="Model.SachMuon"></mapping>
 		<mapping class="Model.PhieuMuon"></mapping>
 
