@@ -1,35 +1,41 @@
 package DAO;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.AnnotationConfiguration;
 
 import Model.PhieuMuon;
-import Model.SachMuon;
 
 public class PhieuMuonDAO {
-	private SessionFactory factory;
-	private Session session;
-	private Transaction ts;
+	private static SessionFactory factory;
+	private static Session session;
+	private static Transaction ts;
+
+	static {
+		try {
+			factory = new AnnotationConfiguration().configure().buildSessionFactory();
+
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+		}
+
+	}
 
 	PhieuMuonDAO() {
 		try {
-			factory = new Configuration().configure().buildSessionFactory();
+			factory = new AnnotationConfiguration().configure().buildSessionFactory();
 
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public void save(PhieuMuon phieuMuon) {
+	public static void save(PhieuMuon phieuMuon) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -39,7 +45,7 @@ public class PhieuMuonDAO {
 		session.close();
 	}
 
-	public void delete(String maPhieu) {
+	public static void delete(String maPhieu) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -50,7 +56,7 @@ public class PhieuMuonDAO {
 
 	}
 
-	public ArrayList<PhieuMuon> getAll() {
+	public static ArrayList<PhieuMuon> getAll() {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -60,7 +66,7 @@ public class PhieuMuonDAO {
 		return pm;
 	}
 
-	public PhieuMuon getByItemCode(String maPhieu) {
+	public static PhieuMuon getByItemCode(String maPhieu) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -75,7 +81,7 @@ public class PhieuMuonDAO {
 		return pm;
 	}
 
-	public void update(PhieuMuon phieuMuon) {
+	public static void update(PhieuMuon phieuMuon) {
 		session = factory.openSession();
 		ts = session.beginTransaction();
 
@@ -87,6 +93,40 @@ public class PhieuMuonDAO {
 		session.update(phieuMuon);
 
 		ts.commit();
+	}
+
+	public static PhieuMuon getByCouponCode(String couponCode) {
+		session = factory.openSession();
+		ts = session.beginTransaction();
+
+		Query query = session.createQuery(" from PhieuMuon where maPhieu= :maPhieu");
+		query.setParameter("maPhieu", couponCode);
+
+		PhieuMuon pm = (PhieuMuon) query.uniqueResult();
+
+		return pm;
+	}
+
+	public static PhieuMuon getByMemberCode(String memberCode) {
+		session = factory.openSession();
+		ts = session.beginTransaction();
+
+		Query query = session.createQuery(" from PhieuMuon where maThanhVien= :maThanhVien");
+		query.setParameter("maThanhVien", memberCode);
+
+		PhieuMuon pm = (PhieuMuon) query.uniqueResult();
+
+		return pm;
+	}
+
+	public static ArrayList<String> getCouponCode() {
+		session = factory.openSession();
+		ts = session.beginTransaction();
+
+		Query query = session.createQuery("select maPhieu from PhieuMuon ");
+		ArrayList<String> couponCode = (ArrayList<String>) query.list();
+
+		return couponCode;
 	}
 
 }

@@ -1,13 +1,18 @@
 package BookManagement.View;
 
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.text.ParseException;
 
-import javax.swing.JMenu;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.table.TableColumn;
+import javax.swing.text.DefaultFormatter;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 
 public class BookManagementView extends javax.swing.JPanel {
 
@@ -34,6 +39,11 @@ public class BookManagementView extends javax.swing.JPanel {
 		jScrollPane1 = new javax.swing.JScrollPane();
 		bookTable = new javax.swing.JTable();
 		jSeparator1 = new javax.swing.JSeparator();
+		keySearchFormattedTF = new javax.swing.JFormattedTextField();
+		subjectSearchComboBox = new JComboBox<String>();
+		subjectSearchComboBox.setModel(new DefaultComboBoxModel<String>(
+				new String[] { "Tên sách", "Mã sách", "Chủ đề", "Nhà xuất bản", "Ngày nhập" }));
+		refreshButton = new javax.swing.JButton("Refresh");
 
 		jToolBar1.setBorder(new javax.swing.border.SoftBevelBorder(0));
 		jToolBar1.setRollover(true);
@@ -56,46 +66,35 @@ public class BookManagementView extends javax.swing.JPanel {
 		deleteButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		jToolBar1.add(deleteButton);
 
-		searchButton.setText("Tìm kiêm");
-		searchButton.setFocusable(false);
-		searchButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-		searchButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-		jToolBar1.add(searchButton);
-
-		final JPopupMenu popupMenu = new JPopupMenu();
-		searchByTenMenuItem = new JMenuItem("Tìm kiếm theo tên");
-		searchByChuDeMenuItem = new JMenuItem("Tìm kiếm theo chủ đề");
-		searchByMaSachMenuItem = new JMenuItem("Tìm kiếm theo mã sách");
-
-		JMenu menu = new JMenu("Tìm kiếm theo ngày nhập ");
-		JMenuItem menuItem4 = new JMenuItem("Từ ngày...đến ngày...");
-		JMenuItem menuItem5 = new JMenuItem("Trước ngày...");
-		JMenuItem menuItem6 = new JMenuItem("Sau ngày...");
-		JMenuItem menuItem7 = new JMenuItem("Ngày...");
-
-		menu.add(menuItem4);
-		menu.add(menuItem5);
-		menu.add(menuItem6);
-		menu.add(menuItem7);
-
-		popupMenu.add(searchByTenMenuItem);
-		popupMenu.add(searchByChuDeMenuItem);
-		popupMenu.add(searchByMaSachMenuItem);
-		popupMenu.add(menu);
-		searchButton.addMouseListener(new MouseAdapter() {
-
-			public void mouseClicked(MouseEvent e) {
-
-				popupMenu.show(searchButton, e.getX(), e.getY());
-			}
-
-		});
-
 		caculateButton.setText("Thống kê");
 		caculateButton.setFocusable(false);
 		caculateButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		caculateButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		jToolBar1.add(caculateButton);
+
+		JLabel label = new JLabel();
+		label.setMaximumSize(new Dimension(350, 28));
+		jToolBar1.add(label);
+
+		refreshButton.setFocusable(false);
+		refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+		refreshButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+		jToolBar1.add(refreshButton);
+
+		searchButton.setText("Tìm kiếm");
+		searchButton.setFocusable(false);
+		searchButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+		searchButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+		jToolBar1.add(searchButton);
+
+		keySearchFormattedTF.setMaximumSize(new Dimension(200, 28));
+		jToolBar1.add(keySearchFormattedTF);
+
+		JLabel subjectSearch = new JLabel("Chủ đề tìm kiếm: ");
+		jToolBar1.add(subjectSearch);
+
+		subjectSearchComboBox.setMaximumSize(new Dimension(150, 30));
+		jToolBar1.add(subjectSearchComboBox);
 
 		bookTable.setBorder(new javax.swing.border.SoftBevelBorder(0));
 		bookTable.setModel(new javax.swing.table.DefaultTableModel(null, new String[] { "STT ", "Tên sách", "Mã sách",
@@ -148,16 +147,29 @@ public class BookManagementView extends javax.swing.JPanel {
 		}
 	}
 
-	public void setSearchByTenMenuItemListener(ActionListener listener) {
-		searchByTenMenuItem.addActionListener(listener);
+	public void setKeySearch(String keySearch) {
+		keySearchFormattedTF.setText(keySearch);
 	}
 
-	public void setSearchByChuDeMenuItemListener(ActionListener listener) {
-		searchByChuDeMenuItem.addActionListener(listener);
+	public void setKeySearchFormater(DefaultFormatterFactory formater) {
+		keySearchFormattedTF.setFormatterFactory(formater);
+
 	}
 
-	public void setSearchByMaSachMenuItemListener(ActionListener listener) {
-		searchByMaSachMenuItem.addActionListener(listener);
+	public String getKeySearch() {
+		return keySearchFormattedTF.getText();
+	}
+
+	public String getSubjectSearch() {
+		return (String) subjectSearchComboBox.getSelectedItem();
+	}
+
+	public void setRefreshButtonListener(ActionListener listener) {
+		refreshButton.addActionListener(listener);
+	}
+
+	public void setSubjectSearchComboBoxListener(ActionListener listener) {
+		subjectSearchComboBox.addActionListener(listener);
 	}
 
 	public void setAddButtonActionListener(ActionListener addButtonListener) {
@@ -190,9 +202,10 @@ public class BookManagementView extends javax.swing.JPanel {
 	}
 
 	// Variables declaration - do not modify
-	private JMenuItem searchByMaSachMenuItem;
-	private JMenuItem searchByChuDeMenuItem;
-	private JMenuItem searchByTenMenuItem;
+	private javax.swing.JButton refreshButton;
+
+	private javax.swing.JComboBox<String> subjectSearchComboBox;
+	private javax.swing.JFormattedTextField keySearchFormattedTF;
 	private javax.swing.JButton addButton;
 	private javax.swing.JButton editButton;
 	private javax.swing.JButton deleteButton;

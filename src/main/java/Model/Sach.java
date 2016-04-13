@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,10 +38,9 @@ public class Sach {
 	private String chuDe;
 
 	@Column(name = "ngay_nhap", nullable = false)
-	private String ngayThem;
+	private Date ngayThem;
 
-	public Sach(String ten, String maSach, String tacGia, String nhaXuatBan, String gia, String chuDe,
-			String ngayThem) {
+	public Sach(String ten, String maSach, String tacGia, String nhaXuatBan, String gia, String chuDe, Date ngayThem) {
 		super();
 		this.ten = ten;
 		this.maSach = maSach;
@@ -54,11 +55,11 @@ public class Sach {
 
 	}
 
-	public String getNgayThem() {
+	public Date getNgayThem() {
 		return ngayThem;
 	}
 
-	public void setNgayThem(String ngayThem) {
+	public void setNgayThem(Date ngayThem) {
 		this.ngayThem = ngayThem;
 	}
 

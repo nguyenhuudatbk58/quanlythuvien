@@ -170,10 +170,6 @@ public class DeleteBookView extends javax.swing.JFrame {
 		pack();
 	}
 
-	public static void main(String[] args) {
-		new DeleteBookView();
-	}
-
 	public void setDeleteButtonListener(ActionListener editButtonActionListener) {
 		deleteButton.addActionListener(editButtonActionListener);
 	}

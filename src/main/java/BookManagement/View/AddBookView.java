@@ -1,7 +1,10 @@
 package BookManagement.View;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.text.MaskFormatter;
 
@@ -10,6 +13,27 @@ public class AddBookView extends javax.swing.JFrame {
 	/**
 	 * 
 	 */
+	public static void main(String[] args) {
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		final SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd-MM-yyyy");
+		final AddBookView addBookView = new AddBookView();
+		addBookView.setAddButtonListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				String stringDate = addBookView.getNgayNhap();
+				System.out.println(stringDate);
+				Date date = null;
+				try {
+					date = dateFormat.parse(stringDate);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				System.out.println(dateFormat2.format(date));
+			}
+
+		});
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	public AddBookView() {

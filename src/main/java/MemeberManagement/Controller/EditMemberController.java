@@ -3,6 +3,8 @@ package MemeberManagement.Controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import DAO.ThanhVienDAO;
 import MemeberManagement.View.EditMemberView;
 import Model.ThanhVien;
@@ -28,6 +30,23 @@ public class EditMemberController {
 				thanhVien.setMaThanhVien(EditMemberController.this.editMemberView.getMaThanhVien());
 				thanhVien.setEmail(EditMemberController.this.editMemberView.getEmail());
 				thanhVien.setDiaChi(EditMemberController.this.editMemberView.getDiaChi());
+
+				if (thanhVien.getTen() == null) {
+					JOptionPane.showMessageDialog(null, "Nhập tên thành viên");
+					return;
+				}
+				if (thanhVien.getMaThanhVien() == null) {
+					JOptionPane.showMessageDialog(null, "Nhập mã số của thành viên");
+					return;
+				}
+				if (thanhVien.getEmail() == null) {
+					JOptionPane.showMessageDialog(null, "Nhập email của thành viên");
+					return;
+				}
+				if (thanhVien.getDiaChi() == null) {
+					JOptionPane.showMessageDialog(null, "Nhập địa chỉ của thành viên");
+					return;
+				}
 
 				thanhVienDAO.updateById(thanhVien);
 

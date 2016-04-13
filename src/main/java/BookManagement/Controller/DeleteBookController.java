@@ -2,8 +2,7 @@ package BookManagement.Controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import org.hibernate.sql.Delete;
+import java.text.SimpleDateFormat;
 
 import BookManagement.View.DeleteBookView;
 import DAO.SachDAO;
@@ -52,12 +51,14 @@ public class DeleteBookController {
 
 	private void displayBookInfo(Sach book) {
 
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
 		this.deleteBookView.setTenSach(book.getTen());
 		this.deleteBookView.setMaSach(book.getMaSach());
 		this.deleteBookView.setTacGia(book.getTacGia());
 		this.deleteBookView.setNhaXuaBan(book.getNhaXuatBan());
 		this.deleteBookView.setChuDeSach(book.getChuDe());
 		this.deleteBookView.setGiaSach(book.getGia());
-		this.deleteBookView.setNgayNhap(book.getNgayThem());
+		this.deleteBookView.setNgayNhap(dateFormat.format(book.getNgayThem()));
 	}
 }

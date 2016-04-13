@@ -1,13 +1,15 @@
 package Model;
 
-import java.util.Calendar;
+import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,23 +24,26 @@ public class SachMuon {
 	@Column(name = "id")
 	private int id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ma_phieu_id", referencedColumnName = "id")
 	private PhieuMuon phieuMuon;
 
 	@Column(name = "ma_sach", nullable = false)
 	private String maSach;
 
+	@Temporal(TemporalType.DATE)
 	@Column(name = "ngay_muon", nullable = false)
-	private String ngayMuon;
+	private Date ngayMuon;
 
+	@Temporal(TemporalType.DATE)
 	@Column(name = "ngay_tra", nullable = false)
-	private String ngayTra;
+	private Date ngayTra;
 
 	public SachMuon() {
 
 	}
 
-	public SachMuon(PhieuMuon phieuMuon, String maSach, String ngayMuon, String ngayTra) {
+	public SachMuon(PhieuMuon phieuMuon, String maSach, Date ngayMuon, Date ngayTra) {
 		super();
 		this.phieuMuon = phieuMuon;
 		this.maSach = maSach;
@@ -70,19 +75,19 @@ public class SachMuon {
 		this.maSach = maSach;
 	}
 
-	public String getNgayMuon() {
+	public Date getNgayMuon() {
 		return ngayMuon;
 	}
 
-	public void setNgayMuon(String ngayMuon) {
+	public void setNgayMuon(Date ngayMuon) {
 		this.ngayMuon = ngayMuon;
 	}
 
-	public String getNgayTra() {
+	public Date getNgayTra() {
 		return ngayTra;
 	}
 
-	public void setNgayTra(String ngayTra) {
+	public void setNgayTra(Date ngayTra) {
 		this.ngayTra = ngayTra;
 	}
 

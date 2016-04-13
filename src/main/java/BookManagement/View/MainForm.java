@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 
 import BookManagement.Controller.BookManagementController;
+import CouponManagement.Controller.CouponManagementController;
+import CouponManagement.View.CouponManagementView;
+import DAO.SachDAO;
 import MemeberManagement.Controller.MemeberManagementController;
 import MemeberManagement.View.MemeberManagementView;
 
@@ -17,12 +20,15 @@ public class MainForm extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
 	private BookManagementView QuanLySachTab = null;
 	private MemeberManagementView QuanLyThanhVienTab = null;
-	private JPanel QuanLyPhieuMuonTab = null;
+	private CouponManagementView QuanLyPhieuMuonTab = null;
 	private JPanel MuonSachTab = null;
 	private JPanel TraSachTab = null;
 
+	private SachDAO sachDAO;
+
 	public MainForm() {
 		initComponents();
+		sachDAO.getByBookCode("");
 	}
 
 	private void initComponents() {
@@ -67,7 +73,7 @@ public class MainForm extends javax.swing.JFrame {
 		});
 		jToolBar2.add(QuanLyThanhVienButton);
 
-		QuanLyPhieuMuonButton.setText("Quản ký phiếu mượn");
+		QuanLyPhieuMuonButton.setText("Quản lý phiếu mượn");
 		QuanLyPhieuMuonButton.setAutoscrolls(true);
 		QuanLyPhieuMuonButton.setFocusable(false);
 		QuanLyPhieuMuonButton.setHideActionText(true);
@@ -94,32 +100,33 @@ public class MainForm extends javax.swing.JFrame {
 		});
 		jToolBar2.add(QuanLySachButton);
 
-		MuonSachButton.setText("Mượn sách");
-		MuonSachButton.setFocusable(false);
-		MuonSachButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-		MuonSachButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-		MuonSachButton.setMaximumSize(new java.awt.Dimension(200, 40));
-		MuonSachButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-		MuonSachButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				MuonSachButtonActionPerformed(evt);
-			}
-		});
-		jToolBar2.add(MuonSachButton);
-
-		TraSachButton.setText("Trả sách");
-		TraSachButton.setFocusable(false);
-		TraSachButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-		TraSachButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-		TraSachButton.setMaximumSize(new java.awt.Dimension(200, 40));
-		TraSachButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-		TraSachButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				TraSachButtonActionPerformed(evt);
-			}
-
-		});
-		jToolBar2.add(TraSachButton);
+		// MuonSachButton.setText("Mượn sách");
+		// MuonSachButton.setFocusable(false);
+		// MuonSachButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+		// MuonSachButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+		// MuonSachButton.setMaximumSize(new java.awt.Dimension(200, 40));
+		// MuonSachButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+		// MuonSachButton.addActionListener(new java.awt.event.ActionListener()
+		// {
+		// public void actionPerformed(java.awt.event.ActionEvent evt) {
+		// MuonSachButtonActionPerformed(evt);
+		// }
+		// });
+		// jToolBar2.add(MuonSachButton);
+		//
+		// TraSachButton.setText("Trả sách");
+		// TraSachButton.setFocusable(false);
+		// TraSachButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+		// TraSachButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+		// TraSachButton.setMaximumSize(new java.awt.Dimension(200, 40));
+		// TraSachButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+		// TraSachButton.addActionListener(new java.awt.event.ActionListener() {
+		// public void actionPerformed(java.awt.event.ActionEvent evt) {
+		// TraSachButtonActionPerformed(evt);
+		// }
+		//
+		// });
+		// jToolBar2.add(TraSachButton);
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
 		jPanel1.setLayout(jPanel1Layout);
@@ -160,7 +167,8 @@ public class MainForm extends javax.swing.JFrame {
 
 	private void QuanLyPhieuMuonButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		if (QuanLyPhieuMuonTab == null) {
-			QuanLyPhieuMuonTab = new JPanel();
+			QuanLyPhieuMuonTab = new CouponManagementView();
+			new CouponManagementController(QuanLyPhieuMuonTab);
 			jTabbedPane1.add(QuanLyPhieuMuonTab, "Quản lý phiếu mượn");
 			jTabbedPane1.setSelectedComponent(QuanLyPhieuMuonTab);
 

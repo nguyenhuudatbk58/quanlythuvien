@@ -2,17 +2,18 @@ package MemeberManagement.Controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 
-import BookManagement.Controller.CaculateController;
-import BookManagement.Controller.SearchBookController;
-import BookManagement.View.CaculateView;
-import BookManagement.View.SearchBookView;
 import DAO.ThanhVienDAO;
 import MemeberManagement.View.AddMemberView;
 import MemeberManagement.View.DeleteMemberView;
@@ -53,6 +54,7 @@ public class MemeberManagementController {
 					member.setMaThanhVien((String) memberTable.getValueAt(selectedRow, 2));
 					member.setEmail((String) memberTable.getValueAt(selectedRow, 3));
 					member.setDiaChi((String) memberTable.getValueAt(selectedRow, 4));
+					member.setNgay_tham_gia((Date) memberTable.getValueAt(selectedRow, 5));
 					member.setId(members.get(selectedRow).getId());
 
 					new EditMemberController(new EditMemberView(), member, MemeberManagementController.this);
@@ -74,31 +76,69 @@ public class MemeberManagementController {
 					member.setMaThanhVien((String) memberTable.getValueAt(selectedRow, 2));
 					member.setEmail((String) memberTable.getValueAt(selectedRow, 3));
 					member.setDiaChi((String) memberTable.getValueAt(selectedRow, 4));
+					member.setNgay_tham_gia((Date) memberTable.getValueAt(selectedRow, 5));
 					member.setId(members.get(selectedRow).getId());
 					new DeleteMemberController(new DeleteMemberView(), member, MemeberManagementController.this);
 				}
 			}
 		});
 
-		this.memberManagementView.setSearchButtonListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// new SearchBookController(new SearchBookView());
+		this.memberManagementView.setSubjectSearchComboBoxListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String subjectSearch = MemeberManagementController.this.memberManagementView.getSubjectSearch();
+				if (subjectSearch.equals("Ngày tham gia")) {
+					DefaultFormatterFactory formatter = null;
+					try {
+						formatter = new DefaultFormatterFactory(new MaskFormatter("##--##--####"));
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					MemeberManagementController.this.memberManagementView.setKeySearchFormater(formatter);
+				} else {
+					DefaultFormatterFactory formatter = null;
+					try {
+						formatter = new DefaultFormatterFactory(
+								new MaskFormatter("**************************************"));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					MemeberManagementController.this.memberManagementView.setKeySearchFormater(formatter);
+				}
 			}
+
 		});
 
 		this.memberManagementView.setCaculateButtonListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new CaculateController(new CaculateView());
+				// new CaculateController(new CaculateView());
 			}
 		});
 	}
 
 	public void loadMembers() {
 		JTable memberTable = memberManagementView.getMemberTable();
-		memberTable.setModel(new javax.swing.table.DefaultTableModel(null,
-				new String[] { "STT ", "Tên thành viên", "Mã thành viên", "Email", "Địa chỉ" }));
+		final javax.swing.table.DefaultTableModel tableModel = new javax.swing.table.DefaultTableModel(null,
+				new String[] { "STT ", "Tên thành viên", "Mã thành viên", "Email", "Địa chỉ", "Ngày tham gia" }) {
+			public Class getColumnClass(int column) {
+				if (column == 0) {
+					return Integer.class;
+				}
+				if (column == 5) {
+					return Date.class;
+				} else {
+					return String.class;
+				}
+			}
+
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+		};
+		memberTable.setModel(tableModel);
 		this.memberManagementView.setSizeColumn();
-		DefaultTableModel tableModel = (DefaultTableModel) memberTable.getModel();
+		final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tableModel);
+		memberTable.setRowSorter(sorter);
 		members = thanhVienDAO.getAll();
 
 		Vector<Object> v;
@@ -110,8 +150,27 @@ public class MemeberManagementController {
 			v.add(member.getMaThanhVien());
 			v.add(member.getEmail());
 			v.add(member.getDiaChi());
+			v.add(member.getNgay_tham_gia());
 			tableModel.addRow(v);
 		}
+
+		this.memberManagementView.setSearchButtonListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String keySearch = MemeberManagementController.this.memberManagementView.getKeySearch();
+				String subjectSearch = MemeberManagementController.this.memberManagementView.getSubjectSearch();
+				new SearchMemeberController(sorter, keySearch.trim(), subjectSearch);
+			}
+
+		});
+
+		this.memberManagementView.setRefreshButtonListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				sorter.setRowFilter(null);
+				MemeberManagementController.this.memberManagementView.setKeySearch(null);
+			}
+
+		});
 
 	}
 

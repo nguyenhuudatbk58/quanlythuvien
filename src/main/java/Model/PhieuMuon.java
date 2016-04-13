@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -20,7 +22,7 @@ public class PhieuMuon {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
+	@Column(name = "id", nullable = false)
 	private int id;
 
 	@Column(name = "ma_phieu", nullable = false)
@@ -30,7 +32,7 @@ public class PhieuMuon {
 	private String maThanhVien; // nguoi muon sach
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "phieuMuon", fetch = FetchType.LAZY)
-	private Set<SachMuon> sachMuon;
+	private Set<SachMuon> sachMuon = new HashSet<SachMuon>();
 
 	public PhieuMuon() {
 
@@ -72,8 +74,19 @@ public class PhieuMuon {
 		return sachMuon;
 	}
 
+	public void setSachMuon(SachMuon sachMuon) {
+		this.sachMuon.add(sachMuon);
+		sachMuon.setPhieuMuon(this);
+	}
+
 	public void setSachMuon(Set<SachMuon> sachMuon) {
 		this.sachMuon = sachMuon;
+		Iterator iterator = (Iterator) sachMuon.iterator();
+
+		while (iterator.hasNext()) {
+			SachMuon sm = (SachMuon) iterator.next();
+			sm.setPhieuMuon(this);
+		}
 	}
 
 }

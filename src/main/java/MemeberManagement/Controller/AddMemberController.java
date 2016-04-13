@@ -2,6 +2,9 @@ package MemeberManagement.Controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 import DAO.ThanhVienDAO;
 import MemeberManagement.View.AddMemberView;
@@ -28,7 +31,24 @@ public class AddMemberController {
 				thanhVien.setMaThanhVien(AddMemberController.this.addMemberView.getMaThanhVien());
 				thanhVien.setEmail(AddMemberController.this.addMemberView.getEmail());
 				thanhVien.setDiaChi(AddMemberController.this.addMemberView.getDiaChi());
+				thanhVien.setNgay_tham_gia(new Date());
 
+				if (thanhVien.getTen() == null) {
+					JOptionPane.showMessageDialog(null, "Nhập tên thành viên");
+					return;
+				}
+				if (thanhVien.getMaThanhVien() == null) {
+					JOptionPane.showMessageDialog(null, "Nhập mã số của thành viên");
+					return;
+				}
+				if (thanhVien.getEmail() == null) {
+					JOptionPane.showMessageDialog(null, "Nhập email của thành viên");
+					return;
+				}
+				if (thanhVien.getDiaChi() == null) {
+					JOptionPane.showMessageDialog(null, "Nhập địa chỉ của thành viên");
+					return;
+				}
 				thanhVienDAO.save(thanhVien);
 
 				AddMemberController.this.mmc.loadMembers();

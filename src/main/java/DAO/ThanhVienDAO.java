@@ -1,6 +1,7 @@
 package DAO;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -10,7 +11,6 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
-import Model.Sach;
 import Model.ThanhVien;
 
 public class ThanhVienDAO {
@@ -94,6 +94,41 @@ public class ThanhVienDAO {
 
 		ts.commit();
 		session.close();
+	}
+
+	public static ArrayList<String> getMemberCodes() {
+		session = factory.openSession();
+		ts = session.beginTransaction();
+
+		Query query = session.createQuery("Select maThanhVien FROM ThanhVien ORDER BY maThanhVien ASC ");
+		ArrayList<String> memberCodes = (ArrayList<String>) query.list();
+
+		return memberCodes;
+	}
+
+	public static String getMemberNameByMemberCode(String memberCode) {
+		session = factory.openSession();
+		ts = session.beginTransaction();
+
+		Query query = session.createQuery("select ten from ThanhVien where maThanhVien= :maThanhVien");
+		query.setParameter("maThanhVien", memberCode);
+		String memberName = (String) query.uniqueResult();
+
+		return memberName;
+	}
+
+	public static Vector<String> getEmails() {
+		session = factory.openSession();
+		ts = session.beginTransaction();
+
+		Query query = session.createQuery("select email from ThanhVien ");
+		ArrayList<String> emails = (ArrayList<String>) query.list();
+
+		Vector<String> e = new Vector<String>();
+		for (String email : emails) {
+			e.add(email);
+		}
+		return e;
 	}
 
 }

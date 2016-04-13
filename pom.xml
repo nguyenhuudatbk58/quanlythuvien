@@ -107,8 +107,20 @@
 			<version>3.12.1.GA</version>
 		</dependency>
 
+		<!-- Dynamic Report -->
+		<dependency>
+			<groupId>net.sourceforge.dynamicreports</groupId>
+			<artifactId>dynamicreports-core</artifactId>
+			<version>4.1.0</version>
+		</dependency>
 
-
+		<!-- Swingx jar -->
+		<dependency>
+			<groupId>org.swinglabs</groupId>
+			<artifactId>swingx</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		
 	</dependencies>
 
 

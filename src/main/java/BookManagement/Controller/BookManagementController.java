@@ -2,21 +2,25 @@ package BookManagement.Controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.RowSorter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 
 import BookManagement.View.AddBookView;
 import BookManagement.View.BookManagementView;
-import BookManagement.View.CaculateView;
 import BookManagement.View.DeleteBookView;
 import BookManagement.View.EditBookView;
-import BookManagement.View.SearchBookView;
+import BookManagement.View.KQThongKeTheoChuDe;
+import BookManagement.View.StatisticBookView;
 import DAO.SachDAO;
 import Model.Sach;
 
@@ -47,6 +51,8 @@ public class BookManagementController {
 					JOptionPane.showMessageDialog(null, "Chọn sách cần chỉnh sửa.");
 				else {
 
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
 					Sach book = new Sach();
 
 					book.setTen((String) bookTable.getValueAt(selectedRow, 1));
@@ -55,7 +61,7 @@ public class BookManagementController {
 					book.setNhaXuatBan((String) bookTable.getValueAt(selectedRow, 4));
 					book.setGia((String) bookTable.getValueAt(selectedRow, 5));
 					book.setChuDe((String) bookTable.getValueAt(selectedRow, 6));
-					book.setNgayThem((String) bookTable.getValueAt(selectedRow, 7));
+					book.setNgayThem((Date) bookTable.getValueAt(selectedRow, 7));
 					book.setId(books.get(selectedRow).getId());
 
 					new EditBookController(new EditBookView(), book, BookManagementController.this);
@@ -79,7 +85,7 @@ public class BookManagementController {
 					book.setNhaXuatBan((String) bookTable.getValueAt(selectedRow, 4));
 					book.setGia((String) bookTable.getValueAt(selectedRow, 5));
 					book.setChuDe((String) bookTable.getValueAt(selectedRow, 6));
-					book.setNgayThem((String) bookTable.getValueAt(selectedRow, 7));
+					book.setNgayThem((Date) bookTable.getValueAt(selectedRow, 7));
 					book.setId(books.get(selectedRow).getId());
 
 					new DeleteBookController(new DeleteBookView(), book, BookManagementController.this);
@@ -89,21 +95,55 @@ public class BookManagementController {
 
 		this.bookManagementView.setCaculateButtonListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new CaculateController(new CaculateView());
+				new StatisticBookController(new StatisticBookView(), new KQThongKeTheoChuDe());
 			}
+		});
+
+		this.bookManagementView.setSubjectSearchComboBoxListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String subjectSearch = BookManagementController.this.bookManagementView.getSubjectSearch();
+				if (subjectSearch.equals("Ngày nhập")) {
+					DefaultFormatterFactory formatter = null;
+					try {
+						formatter = new DefaultFormatterFactory(new MaskFormatter("##--##--####"));
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					BookManagementController.this.bookManagementView.setKeySearchFormater(formatter);
+				} else {
+					DefaultFormatterFactory formatter = null;
+					try {
+						formatter = new DefaultFormatterFactory(
+								new MaskFormatter("**************************************"));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					BookManagementController.this.bookManagementView.setKeySearchFormater(formatter);
+					System.out.println("Reset formatted text field");
+				}
+			}
+
 		});
 	}
 
+	@SuppressWarnings("static-access")
 	public void loadBooks() {
 		JTable bookTable = bookManagementView.getBookTable();
 		javax.swing.table.DefaultTableModel tableModel = new javax.swing.table.DefaultTableModel(null, new String[] {
-				"STT ", "Tên sách", "Mã sách", "Tác giả", "Nhà xuất bản", "Giá ", "Chủ đề", "Ngày thêm" }) {
+				"STT ", "Tên sách", "Mã sách", "Tác giả", "Nhà xuất bản", "Giá ", "Chủ đề", "Ngày nhập" }) {
 			public Class getColumnClass(int column) {
 				if (column == 0) {
 					return Integer.class;
+				} else if (column == 7) {
+					return Date.class;
 				} else {
 					return String.class;
 				}
+			}
+
+			public boolean isCellEditable(int row, int col) {
+				return false;
 			}
 		};
 		bookTable.setModel(tableModel);
@@ -126,17 +166,23 @@ public class BookManagementController {
 			v.add(sach.getNgayThem());
 			tableModel.addRow(v);
 		}
-		this.bookManagementView.setSearchByTenMenuItemListener(new ActionListener() {
+
+		this.bookManagementView.setSearchButtonListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				(new SearchBookView(sorter)).displaySearchByTenView();
+				String keySearch = BookManagementController.this.bookManagementView.getKeySearch();
+				String subjectSearch = BookManagementController.this.bookManagementView.getSubjectSearch();
+				new SearchBookController(sorter, keySearch.trim(), subjectSearch);
 			}
 
 		});
 
-		this.bookManagementView.setSearchByChuDeMenuItemListener(new ActionListener() {
+		this.bookManagementView.setRefreshButtonListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
-				(new SearchBookView(sorter)).displaySearchByChuDeView();
+				sorter.setRowFilter(null);
+				BookManagementController.this.bookManagementView.setKeySearch(null);
 			}
+
 		});
 
 	}
